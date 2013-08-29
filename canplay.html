@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Can my browser play M4v videos? <span>
+<button onclick="supportType(event,'video/m4v','avc1.42E01E, mp4a.40.2')" type="button">Test</button>
+</span></p>
+
+<p>Can my browser play OGG videos? <span>
+<button onclick="supportType(event,'video/ogg','theora, vorbis')" type="button">Test</button>
+</span></p>
+
+<script>
+    function supportType(e,vidType,codType)
+    {
+        myVid=document.createElement('video');
+        isSupp=myVid.canPlayType(vidType+';codecs="'+codType+'"');
+        if (isSupp=="")
+        {
+            isSupp="can not play";
+        }
+        e.target.parentNode.innerHTML="Answer: " + isSupp;
+    }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="getAudioTracks()" type="button">Get the number of available audio tracks</button>
+<br>
+<video id="video1" controls="controls">
+    <source src="mov_bbb.mp4" type="video/mp4">
+    <source src="mov_bbb.ogg" type="video/ogg">
+    Your browser does not support HTML5 video.
+</video>
+
+<script>
+    myVid=document.getElementById("video1");
+    function getAudioTracks()
+    {
+        alert(myVid.audioTracks.length);
+    }
+</script>
+
+
+
+</body>
+</html>
