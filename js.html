@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <script type="text/javascript">
-        var userPass = document.getElementById('pass');
-        function submit(){
-            alert(userPass.value);
+<HTML>
+<HEAD>
+    <TITLE>Test Input</TITLE>
+    <SCRIPT LANGUAGE="JavaScript">
+        function testResults (form) {
+            var TestVar = form.inputbox.value;
+            var abb= form.inputbox.value;
+            document.write("Username:--"+TestVar);
+            document.write("location:--"+abb);
         }
-    </script>
-</head>
-<body>
-
-<h1>My First Web Page</h1>
-<form>
-<input type="text" id="pass" />
-<input type="button" onclick="submit();">
-</form>
-
-</body>
+    </SCRIPT>
+</HEAD>
+<BODY>
+<FORM NAME="myform" ACTION="" METHOD="GET">Enter something in the box: <BR>
+    NAME<INPUT TYPE="text" NAME="inputbox" VALUE=""><P>
+    LOCATION<INPUT type="TEXT" NAME="LOC" VALUE="">
+        <INPUT TYPE="button" NAME="button" Value="Click" onClick="testResults(this.form)">
+</FORM>
+</BODY>
 </html>
