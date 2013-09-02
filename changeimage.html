@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+    function changeImage()
+    {
+        x=document.getElementById("button")  //Find the element
+
+        element=document.getElementById('myimage')
+        if (element.src.match("on.gif"))
+        {
+            element.src="pic_bulboff.gif";
+            x.style.color="blue";
+        }
+        else
+        {
+            element.src="pic_bulbon.gif";
+            x.style.color="#ff0000";
+        }
+    }
+</script>
+<div id="container" style="background-color: darkseagreen;width:500px;">
+    <div id="header" style="background-color:#FFA500;">
+        <h1 style="margin-bottom:0;">Changing the Image</h1></div>
+    <div id="menu" style="background-color:green;width:150px;height:220px;float:left;">
+        <ul>
+            <li>
+        <button type="button" id="button"  onclick="changeImage()">ON/OFF</button>
+            </li>
+        </ul>
+    </div>
+
+<div style="background-color:blue;" align="center">
+
+<img id="myimage" src="pic_bulboff.gif" width="100" height="180">
+
+
+<p>Click the button to turn on/off the light</p>
+ </div>
+    <div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">
+        Copyright © Manusis.com</div>
+
+</div>
+ </div>
+</body>
+</html>
+
