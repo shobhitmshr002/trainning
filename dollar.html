@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rupee Change - jQuery Flavour</title>
+</head>
+
+<body>
+<p>This is a price listing with &#36; sign, Now I wanted to replace each dollar sign with rupee symbol</p>
+<ul>
+    <li>&#2352; 500</li>
+    <li>&#36; 600</li>
+    <li>&#36; 700</li>
+    <li>&#36; 800</li>
+    <li>&#36; 900</li>
+</ul>
+
+<div id="showhtml"></div>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(this).html().replace('$', "<del>&#2352;</del>");
+    });
+</script>
+</body>
+</html> 
