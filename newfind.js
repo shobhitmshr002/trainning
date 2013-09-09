@@ -6,7 +6,7 @@ function find()
     for(var i=0;i<b.length;i++)
     {
         var d=b.substr(i,a.length)
-        if (d.indexOf(a) > -1)
+        if (d.indexOf(a) != -1)
             c=c +" " + (d.indexOf(a)+i);
     }
     if (c!="")
