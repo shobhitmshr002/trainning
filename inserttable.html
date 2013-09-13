@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="./db.js"></script>
+    <link href="./db.css" rel="stylesheet">
+    <script src="./createtable.js"></script>
+    <title></title>
+</head>
+<body onload="tablename()">
+<table>
+    <tr>
+        <th colspan="2">
+            <h1>INSERT ROWS</h1>
+        </th>
+    </tr>
+
+    <tr>
+        <td colspan="2" style="text-align: center">
+            Table Name
+            <select id="in1" onblur="colName()">
+                <option value="0">Select</option>
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" style="border: 1px solid #000000">
+            Name of Column&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value
+
+            <table id=area>
+
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center">
+            <button onclick="insert()">Insert</button>
+        </td>
+    </tr>
+
+</table>
+<script>
+    var columnss = [];
+    function colName() {
+        db.transaction(function (tx) {
+
+                    tx.executeSql("SELECT * FROM " + document.getElementById("in1").value + ";", [], function (tx, results) {
+                        var len = results.rows.length, i, m, j, txt = "";
+                        for (m in results.rows.item(0)) {
+                            columnss.push(m);
+                        }
+                        for (j = 0; j < columnss.length; j++) {
+                            var bb = document.createElement("tr");
+                            var cc = document.createElement("td");
+                            var br = document.createElement("br");
+                            var input = document.createElement("input");
+                            input.type = "text";
+                            input.disabled = "true";
+                            input.value = columns[j];
+                            input.id = "n1" + j;
+                            var input1 = document.createElement("input");
+                            input1.type = "text";
+                            input1.id = "n" + j;
+                            cc.appendChild(input);
+                            ;
+                            cc.appendChild(input1);
+                            cc.appendChild(br);
+                            bb.appendChild(cc);
+                            document.getElementById("area").appendChild(bb);
+
+                        }
+                    });
+                }
+                , function (err) {
+                    window.alert("Error 1: " + err.message);
+                }
+        );
+    }
+    function insert() {
+        var name = document.getElementById("in1").value;
+        var sql = "INSERT INTO " + name + " ( ", temp = "", temp1 = "'";
+        for (var i = 1; i < columns.length; i++) {
+            var a1 = document.getElementById("n1" + i + "").value;
+            var a2 = document.getElementById("n" + i + "").value;
+            if (i < columns.length - 1) {
+                temp = temp + a1 + "  , ";
+                temp1 = temp1 + a2 + "'  , '";
+            }
+            else {
+                temp = temp + a1 + "  ";
+                temp1 = temp1 + a2 + " ' ";
+            }
+        }
+        sql = sql + temp + ") VALUES ( " + temp1 + " );";
+
+        var db = openDatabase('TEST', '1.1', 'TEST NAME', 65536);
+        db.transaction(function (tx) {
+                    tx.executeSql(sql);
+
+
+                }
+                , function (err) {
+                    window.alert("Error 1: " + err.message);
+                });
+    }
+</script>
+</body>
+</html>

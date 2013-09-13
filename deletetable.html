@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="./db.css" rel="stylesheet">
+    <script src="./db.js"></script>
+    <script src="./createtable.js"></script>
+    <title></title>
+</head>
+<body onload="tablename()">
+<table>
+    <tr>
+        <th colspan="2">
+            <h1>DELETE ROWS</h1>
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center">
+            Table Name:
+
+            <select id="in1" onblur="ret()">
+                <option value="0">Select</option>
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" style="border: 1px solid #000000; text-align: center">
+
+
+            Column Name&nbsp;&nbsp;<select id="in2" onblur="data()"  style="width: 200px">
+            <option value="0">Select</option>
+        </select>
+            <br>
+            <br>
+            <br>
+            Value&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select id="in3" style="width: 200px">
+            <option value="0">Select</option>
+        </select>
+
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center">
+            <button onclick="db_retrive()">Insert</button>
+        </td>
+    </tr>
+
+</table>
+<script>
+    var res;
+    function ret() {
+
+        var name = document.getElementById("in1").value;
+
+        var sql = "select * from " + name + " ;";
+
+        db.transaction(function (tx) {
+                    tx.executeSql(sql, [], function (tx, results) {
+                                res = results;
+                                var len = results.rows.length, i, j, m, txt, columns = [];
+                                if (len > 0) {
+
+                                    for (m in results.rows.item(0)) {
+                                        columns.push(m);
+                                    }
+                                    for (j = 0; j < columns.length; j++) {
+                                        var opt1 = document.createElement("option");
+                                        opt1.value = columns[j];
+                                        var txt1 = document.createTextNode(columns[j]);
+                                        opt1.appendChild(txt1);
+                                        document.getElementById("in2").appendChild(opt1);
+                                    }
+
+                                }
+                                else {
+                                    alert("rahul")
+                                }
+
+
+                            }
+                    );
+                }
+                , function (err) {
+                    window.alert("Error 1: " + err.message);
+                }
+        );
+
+
+    }
+    function data() {
+
+        var i;
+        var dataa = document.getElementById("in2").value;
+        for (i = 0; i < res.rows.length; i++) {
+            var opt1 = document.createElement("option");
+            opt1.value = res.rows.item(i)[dataa];
+            var txt1 = document.createTextNode(res.rows.item(i)[dataa]);
+            opt1.appendChild(txt1);
+            document.getElementById("in3").appendChild(opt1);
+
+        }
+    }
+</script>
+</body>
+</html>

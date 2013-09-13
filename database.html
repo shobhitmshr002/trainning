@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC>
+
+<html>
+
+<head>
+
+    <title>database</title>
+
+    <link rel="Stylesheet" href="./db.css"/>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#occ").focus(function () {
+                //if(occ.value=="other")
+                    $("#tog").slideDown("slow");
+
+
+            });
+        });
+    </script>
+
+<body onload="initialLoad()">
+
+<h1>CONTACT FORM</h1>
+
+<form id="mycontact" method="post" >
+
+    <fieldset style="color: darkred">
+
+        <legend>Your details</legend>
+
+        <ol>
+
+            <li>
+
+                <label for="username">Name</label>
+
+                <input id="username" type="text" placeholder="First and last name" required autofocus >
+
+                <input type="hidden" id="id"/>
+
+            </li>
+
+            <li>
+
+                <label for="useremail">Email</label>
+
+                <input id="useremail" type="text" placeholder="example@domain.com" required >
+
+            </li>
+
+            <li>
+
+                <label for="address">Address</label>
+
+                <input id="address" type="text" placeholder="address" required >
+            </li>
+
+            <li>
+
+                <label for="phone">Phone</label>
+
+                <input id="phone" type="text" placeholder="10 digit no." required >
+
+
+            </li>
+
+               <label for="image">Profile image</label>
+
+               <input type="file" id="image" name="files[]" multiple />
+
+
+
+        </ol>
+
+    </fieldset>
+
+
+
+</form>
+<button id="btnReset" >Reset</button>
+
+<button id="submitButton" >SAVE</button>
+
+<button id="btnUpdate" >UPDATE</button>
+
+<button id="btnDrop" >DROP</button>
+<br/>
+<select id="detail">
+
+</select>
+
+<div id="results"></div>
+<output id="list"></output>
+<script type="text/javascript" src="./database.js"></script>
+
+</body>
+
+<script>
+
+</script>
+</html>
+

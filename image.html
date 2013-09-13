@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script>
+        function run(){
+            var gendate = new Date().getTime()
+            var filename = "paper.gif"  //add any file in your system
+            var key = gendate+filename;
+            var db = window.openDatabase("sqldb", "1.0", "Sql Test DB", 5 * 1024 * 1024, function(){
+                console.log("success")
+            }, function(e){
+                console.log(e);
+            });
+
+            function put(){
+                var req = new XMLHttpRequest();
+                req.open('GET', filename , false);
+                req.overrideMimeType('text\/plain; charset=x-user-defined');
+                req.responseType = "blob";
+                req.onerror = function(){
+                    console.log("ERROR: "+req.StatusText);
+                }
+                req.onload = function () {
+                    showImage(req.response);
+                    var reader = new FileReader();
+                    reader.onloadend = function(e) {
+                        data = reader.result.replace(/^data:.+;base64,/, '');
+                        db.transaction( function (tx) {
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS tmptable  (key, body NONE)');
+                            tx.executeSql('INSERT INTO tmptable (key, body) VALUES (?, ?)',[key, data]);
+                            get();
+                        });
+                    };
+                    reader.readAsDataURL(req.response);
+                }
+                req.send(null);
+            }
+
+            function get(){
+                db.transaction( function (tx) {
+                    tx.executeSql('Select body from tmptable where key=?', [key],
+                            function(tx, result){
+                                var data = atob(result.rows.item(0).body)
+                                var barray = new Uint8Array(data.length);
+                                for (var i = 0; i < data.length; i++) {
+                                    barray[i] = data.charCodeAt(i) & 0xff;
+                                }
+                                blob = new Blob([barray], {type:"image/png"});
+                                showImage(blob);
+                            }, function(err){
+                                console.log("ERROR: ", err)
+                            });
+                });
+            }
+            function showImage( blob) {
+                var img = document.createElement('img');
+                img.onload = function() {
+                    window.URL.revokeObjectURL(blob);
+                };
+                img.src = window.URL.createObjectURL(blob);
+                document.body.appendChild(img);
+            }
+            put();
+        }
+    </script>
+    <title>Insert title here</title>
+</head>
+<body onload="run()">
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="./db.css" rel="stylesheet">
+
+    <script src="createtable.js"></script>
+    <script src="db.js"></script>
+
+</head>
+<body>
+<table >
+    <tr>
+        <th colspan="2">
+            <h1>RETRIVE DATA</h1>
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center">
+            Table Name
+
+            <select id="in1">
+                <option value="0">Select</option>
+                <option value="emp">emp</option>
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" style="border: 1px solid #000000">
+
+
+            <div id=area>
+
+            </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center">
+            <button onclick="db_retrive()">Retrive</button>
+        </td>
+    </tr>
+
+</table>
+</body>
+</html>
