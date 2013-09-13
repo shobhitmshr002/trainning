@@ -10,6 +10,14 @@
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 
+    <style>
+        .thumb {
+            height: 75px;
+            border: 1px solid #000;
+            margin: 10px 5px 0 0;
+        }
+    </style>
+
     <script>
         $(document).ready(function () {
 
@@ -89,8 +97,8 @@
 
 <button id="btnDrop" >DROP</button>
 <br/>
-<select id="detail">
-
+<select id="detail" onselect="alertdata(this.value)">
+ <option value="" selected>select</option>
 </select>
 
 <div id="results"></div>

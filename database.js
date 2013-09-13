@@ -156,7 +156,7 @@ function loadAndReset() //Function for Load and Reset...
 
     showRecords();
 
-    createOption();
+
 
 }
 
@@ -184,13 +184,14 @@ function showRecords() // Function For Retrive data from Database Display record
 
                 item = dataset.item(i);
 
-                var linkeditdelete = '<li>' + item['username'] + ' , ' + item['useremail'] + ' , ' + item['address'] + ' , ' + item['phone']+ ' , ' +'<img src="'+item['image']+'"/>' + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
+                var linkeditdelete = '<li>' + item['username'] + ' , ' + item['useremail'] + ' , ' + item['address'] + ' , ' + item['phone']+ ' , ' +'<img class="thumb" src="'+item['image']+'"/>' + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
 
                     '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li>';
 
                 $("#results").append(linkeditdelete);
 
             }
+            createOption();
 
         });
 
@@ -319,7 +320,8 @@ function createOption(){
 
                 item = dataset.item(i);
 
-                 var opt =$("<option></option>").value(item[id]);
+                 var opt =new Option(item.id,item.id);
+               //  $(opt).html(item.id);
 
                 $("#detail").append(opt);
 
@@ -329,6 +331,20 @@ function createOption(){
 
     });
 
+}
+
+function alertdata(i)
+{       alert("hello");
+    db.transaction(function (tx) {
+
+        tx.executeSql(selectAllStatement, [], function (tx, result) {
+
+            dataset = result.rows;
+            it=dataset.item(i);
+            alert("welcome"+it.username+" "+it.phone+" ");
+            });
+
+        });
 }
 
 //initialLoad();
