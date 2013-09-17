@@ -6,7 +6,7 @@
 
     <title>database</title>
 
-    <link rel="Stylesheet" href="./db.css"/>
+    <link rel="Stylesheet" href="./database.css"/>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 
@@ -23,7 +23,7 @@
 
             $("#occ").focus(function () {
                 //if(occ.value=="other")
-                    $("#tog").slideDown("slow");
+                $("#tog").slideDown("slow");
 
 
             });
@@ -34,7 +34,7 @@
 
 <h1>CONTACT FORM</h1>
 
-<form id="mycontact" method="post" >
+<form id="mycontact" method="post">
 
     <fieldset style="color: darkred">
 
@@ -46,7 +46,7 @@
 
                 <label for="username">Name</label>
 
-                <input id="username" type="text" placeholder="First and last name" required autofocus >
+                <input id="username" type="text" placeholder="First and last name" required autofocus>
 
                 <input type="hidden" id="id"/>
 
@@ -56,7 +56,7 @@
 
                 <label for="useremail">Email</label>
 
-                <input id="useremail" type="text" placeholder="example@domain.com" required >
+                <input id="useremail" type="text" placeholder="example@domain.com" required>
 
             </li>
 
@@ -64,44 +64,51 @@
 
                 <label for="address">Address</label>
 
-                <input id="address" type="text" placeholder="address" required >
+                <input id="address" type="text" placeholder="address" required>
             </li>
 
             <li>
 
                 <label for="phone">Phone</label>
 
-                <input id="phone" type="text" placeholder="10 digit no." required >
+                <input id="phone" type="text" placeholder="10 digit no." required>
 
 
             </li>
 
-               <label for="image">Profile image</label>
+            <label for="image">Profile image</label>
 
-               <input type="file" id="image" name="files[]" multiple />
+            <input type="file" id="image" name="files[]" multiple/>
 
 
+            <li>
+                <label>Select Gender</label>
+                <input type="radio" name="gender" value="m">
+                <input type="radio" name="gender" value="f">
+            </li>
 
+            <li>
+                <label>select background color</label>
+                <input type="color">
+            </li>
         </ol>
-
     </fieldset>
 
 
-
 </form>
-<button id="btnReset" >Reset</button>
+<button id="btnReset">Reset</button>
 
-<button id="submitButton" >SAVE</button>
+<button id="submitButton">SAVE</button>
 
-<button id="btnUpdate" >UPDATE</button>
+<button id="btnUpdate">UPDATE</button>
 
-<button id="btnDrop" >DROP</button>
+<button id="btnDrop">DROP</button>
 <br/>
-<select id="detail" onselect="alertdata(this.value)">
- <option value="" selected>select</option>
+<select id="detail">
+    <option value=" " selected>select</option>
 </select>
 
-<div id="results"></div>
+<table border="solid" id="results"></table>
 <output id="list"></output>
 <script type="text/javascript" src="./database.js"></script>
 

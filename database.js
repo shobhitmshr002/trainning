@@ -184,9 +184,9 @@ function showRecords() // Function For Retrive data from Database Display record
 
                 item = dataset.item(i);
 
-                var linkeditdelete = '<li>' + item['username'] + ' , ' + item['useremail'] + ' , ' + item['address'] + ' , ' + item['phone']+ ' , ' +'<img class="thumb" src="'+item['image']+'"/>' + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
+                var linkeditdelete = '<tr><td><li>' + item['username'] + ' , ' + item['useremail'] + ' , ' + item['address'] + ' , ' + item['phone']+ ' , ' +'<img class="thumb" src="'+item['image']+'"/>' + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
 
-                    '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li>';
+                    '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li></td></tr>';
 
                 $("#results").append(linkeditdelete);
 
@@ -257,6 +257,25 @@ function handleFileSelect(evt) {
         handleFileSelect(event);
     });
 
+
+    $(document).on('change', '#detail', function() {
+
+
+//                var dataset = result.rows;
+//                var it=dataset.item($(this).val());
+//                console.log(it);
+//                alert("welcome"+it.username+" "+it.phone+" ");
+        console.log(dataset);
+        for (var i = 0, item = null; i < dataset.length; i++) {
+            item = dataset.item(i);
+            if(item.id == $(this).val()) {
+                alert("welcome  :"+item.username+" "+item.phone+" ");
+                // console.log(item);
+            }
+
+        }
+    });
+
     $(document).on('click', '#submitButton', function() {
         alert("in here");
         var usernametemp = $('input:text[id=username]').val();
@@ -321,7 +340,7 @@ function createOption(){
                 item = dataset.item(i);
 
                  var opt =new Option(item.id,item.id);
-               //  $(opt).html(item.id);
+             //   $(opt).html(item.id);
 
                 $("#detail").append(opt);
 
@@ -333,18 +352,11 @@ function createOption(){
 
 }
 
-function alertdata(i)
-{       alert("hello");
-    db.transaction(function (tx) {
+/*function alertdata()
+{
+    var i=$("#detail").value;
+    alert(i);
 
-        tx.executeSql(selectAllStatement, [], function (tx, result) {
-
-            dataset = result.rows;
-            it=dataset.item(i);
-            alert("welcome"+it.username+" "+it.phone+" ");
-            });
-
-        });
-}
+}        */
 
 //initialLoad();
