@@ -8,13 +8,13 @@
 
 //  Declare SQL Query for SQLite
 
-var createStatement = "CREATE TABLE IF NOT EXISTS Contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, useremail TEXT,address TEXT,phone INTEGER,image BLOB)";
+var createStatement = "CREATE TABLE IF NOT EXISTS Contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, useremail TEXT,address TEXT,phone INTEGER,gender TEXT,hobbies TEXT,image BLOB)";
 
 var selectAllStatement = "SELECT * FROM Contacts";
 
-var insertStatement = "INSERT INTO Contacts (username, useremail, address, phone, image) VALUES (?, ?, ?, ?, ?)";
+var insertStatement = "INSERT INTO Contacts (username, useremail, address, phone,gender, hobbies, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-var updateStatement = "UPDATE Contacts SET username = ?, useremail = ?, address = ?, phone = ?, image = ? WHERE id=?";
+var updateStatement = "UPDATE Contacts SET username = ?, useremail = ?, address = ?, phone = ?,gender = ?,hobbies = ?, image = ? WHERE id=?";
 
 var deleteStatement = "DELETE FROM Contacts WHERE id=?";
 
@@ -72,10 +72,11 @@ function createTable()  // Function for Create Table in SQLite.
 
 {
 
-    db.transaction(function (tx) { tx.executeSql(createStatement, [], showRecords, onError); });
+    db.transaction(function (tx) {
+        tx.executeSql(createStatement, [], showRecords, onError);
+    });
 
 }
-
 
 
 function deleteRecord(id) // Get id of record . Function Call when Delete Button Click..
@@ -84,7 +85,10 @@ function deleteRecord(id) // Get id of record . Function Call when Delete Button
 
     var iddelete = id.toString();
 
-    db.transaction(function (tx) { tx.executeSql(deleteStatement, [id], showRecords, onError); alert("Deleted record Sucessfully"); });
+    db.transaction(function (tx) {
+        tx.executeSql(deleteStatement, [id], showRecords, onError);
+        alert("Deleted record Sucessfully");
+    });
 
     resetForm();
 
@@ -101,7 +105,9 @@ function dropTable() // Function Call when Drop Button Click.. Talbe will be dro
 
 {
 
-    db.transaction(function (tx) { tx.executeSql(dropStatement, [], showRecords, onError); });
+    db.transaction(function (tx) {
+        tx.executeSql(dropStatement, [], showRecords, onError);
+    });
 
     resetForm();
 
@@ -122,8 +128,8 @@ function loadRecord(i) // Function for display records which are retrived from d
     $("#address").val((item['address']).toString());
 
     $("#phone").val((item['phone']).toString());
-              console.log(item);
-  //  var image = item.image;
+
+    //  var image = item.image;
     //$("#image").val(image);
 
     $("#id").val((item['id']).toString());
@@ -142,6 +148,10 @@ function resetForm() // Function for reset form input values.
 
     $("#phone").val("");
 
+    $("#gender").val("");
+
+    $("#hobbies").val("");
+
     $("#image").val("");
 
     $("#id").val("");
@@ -155,7 +165,6 @@ function loadAndReset() //Function for Load and Reset...
     resetForm();
 
     showRecords();
-
 
 
 }
@@ -184,7 +193,7 @@ function showRecords() // Function For Retrive data from Database Display record
 
                 item = dataset.item(i);
 
-                var linkeditdelete = '<tr><td><li>' + item['username'] + ' , ' + item['useremail'] + ' , ' + item['address'] + ' , ' + item['phone']+ ' , ' +'<img class="thumb" src="'+item['image']+'"/>' + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
+                var linkeditdelete = '<tr><td><li>' + item['username'] + ' , ' + item['useremail'] + ' , ' + item['address'] + ' , ' + item['phone'] + ' , ' + '<img class="thumb" src="' + item['image'] + '"/>' + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
 
                     '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li></td></tr>';
 
@@ -213,8 +222,8 @@ function handleFileSelect(evt) {
 
         var reader = new FileReader();
         // Closure to capture the file information.
-        reader.onload = (function(f) {
-            return function(e) {
+        reader.onload = (function (f) {
+            return function (e) {
                 // Render thumbnail.
 
 //                var span = document.createElement('span');
@@ -222,7 +231,7 @@ function handleFileSelect(evt) {
 //                    '" title="', escape(theFile.name), '"/>'].join('');
 //                document.getElementById('list').insertBefore(span, null);
 
-                var imagetemp =e.target.result;
+                var imagetemp = e.target.result;
                 $('#image').attr('target', imagetemp);
                 //   db.transaction(function (tx) { tx.executeSql(insertStatement, [imagetemp],onError); });
 
@@ -231,7 +240,6 @@ function handleFileSelect(evt) {
                 //{
 
                 // var imagetemp = $('input:file[id=image]').val();
-
 
 
                 //tx.executeSql(SQL Query Statement,[ Parameters ] , Sucess Result Handler Function, Error Result Handler Function );
@@ -247,18 +255,18 @@ function handleFileSelect(evt) {
     }
 }
 
-  function initialLoad() {
+function initialLoad() {
 
 
     $("body").fadeIn(2000); // Fede In Effect when Page Load..
 
     initDatabase();
-    $('#image').change(function(event) {
+    $('#image').change(function (event) {
         handleFileSelect(event);
     });
 
 
-    $(document).on('change', '#detail', function() {
+    $(document).on('change', '#detail', function () {
 
 
 //                var dataset = result.rows;
@@ -268,15 +276,15 @@ function handleFileSelect(evt) {
         console.log(dataset);
         for (var i = 0, item = null; i < dataset.length; i++) {
             item = dataset.item(i);
-            if(item.id == $(this).val()) {
-                alert("welcome  :"+item.username+" "+item.phone+" ");
+            if (item.id == $(this).val()) {
+                alert("welcome  :" + item.username + " " + item.phone + " ");
                 // console.log(item);
             }
 
         }
     });
 
-    $(document).on('click', '#submitButton', function() {
+    $(document).on('click', '#submitButton', function () {
         alert("in here");
         var usernametemp = $('input:text[id=username]').val();
 
@@ -285,14 +293,22 @@ function handleFileSelect(evt) {
         var useraddresstemp = $('input:text[id=address]').val();
 
         var phonetemp = $('input:text[id=phone]').val();
+
+        var gender = $('input[name=gender]:selected');
+        var hobbies = [];
+        $('input[name=hobbies]:checked').each(function () {
+            hobbies.push($(this).val());
+        });
         var imagetemp = $('#image').attr('target');
-        db.transaction(function (tx) { tx.executeSql(insertStatement, [usernametemp, useremailtemp, useraddresstemp, phonetemp, imagetemp], loadAndReset, onError); });
+        db.transaction(function (tx) {
+            tx.executeSql(insertStatement, [usernametemp, useremailtemp, useraddresstemp, phonetemp,gender,hobbies, imagetemp], loadAndReset, onError);
+        });
         return false;
     });
 
-    $(document).on('click','#btnUpdate',function(){
+    $(document).on('click', '#btnUpdate', function () {
 
-        $('#image').change(function(event) {
+        $('#image').change(function (event) {
             handleFileSelect(event);
         });
 
@@ -304,30 +320,40 @@ function handleFileSelect(evt) {
 
         var phoneupdate = $('input:text[id=phone]').val().toString();
 
-        var imageupdate=$('#image').attr('target');
+        var imageupdate = $('#image').attr('target');
+
+        var gender = $('input[name=gender]:selected');
+        var hobbies = [];
+        $('input[name=hobbies]:checked').each(function () {
+            hobbies.push($(this).val());
+        });
+        console.log(hobbies);
+
+       // $('input[name=hobbies]').attr('target', hobbies);
         // var imageupdate = $('#image').val();
 
         var useridupdate = $("#id").val();
         // db.transaction(function (ts){ ts.executeSql(deletes,[],loadAndReset(),onError())})
-        db.transaction(function (tx) { tx.executeSql(updateStatement, [usernameupdate, useremailupdate, addressupdate, phoneupdate, imageupdate, useridupdate], loadAndReset, onError); });
+        db.transaction(function (tx) {
+            tx.executeSql(updateStatement, [usernameupdate, useremailupdate, addressupdate, phoneupdate, imageupdate, gender, hobbies, useridupdate], loadAndReset, onError);
+        });
 
 
     });
 
 
-
 //    $("#submitButton").bind('click',alert("hello"));  // Register Event Listener when button click.
 
-  //  $("#btnUpdate").click(updateRecord);
+    //  $("#btnUpdate").click(updateRecord);
 
     $("#btnReset").click(resetForm);
 
     $("#btnDrop").click(dropTable);
 
 
-  }
+}
 
-function createOption(){
+function createOption() {
 
     db.transaction(function (tx) {
 
@@ -339,8 +365,8 @@ function createOption(){
 
                 item = dataset.item(i);
 
-                 var opt =new Option(item.id,item.id);
-             //   $(opt).html(item.id);
+                var opt = new Option(item.id, item.id);
+                //   $(opt).html(item.id);
 
                 $("#detail").append(opt);
 
@@ -353,10 +379,10 @@ function createOption(){
 }
 
 /*function alertdata()
-{
-    var i=$("#detail").value;
-    alert(i);
+ {
+ var i=$("#detail").value;
+ alert(i);
 
-}        */
+ }        */
 
 //initialLoad();
