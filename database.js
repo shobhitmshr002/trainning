@@ -150,7 +150,7 @@ function resetForm() // Function for reset form input values.
 
     $("#gender").val("");
 
-    $("#hobbies").val("");
+    $('input[type=checkbox]').attr('checked',false);
 
     $("#image").val("");
 
@@ -265,6 +265,10 @@ function initialLoad() {
         handleFileSelect(event);
     });
 
+    $(document).on('change','#color', function() {
+     // fires only after clicking OK
+        $('#mycontact').css('background-color', jQuery(this).val());
+            });
 
     $(document).on('change', '#detail', function () {
 
@@ -294,7 +298,7 @@ function initialLoad() {
 
         var phonetemp = $('input:text[id=phone]').val();
 
-        var gender = $('input[name=gender]:selected');
+        var gender = $('input[name=gender]:checked').val();
         var hobbies = [];
         $('input[name=hobbies]:checked').each(function () {
             hobbies.push($(this).val());
@@ -322,7 +326,7 @@ function initialLoad() {
 
         var imageupdate = $('#image').attr('target');
 
-        var gender = $('input[name=gender]:selected');
+        var gender = $('input[name=gender]:checked').val();
         var hobbies = [];
         $('input[name=hobbies]:checked').each(function () {
             hobbies.push($(this).val());
@@ -335,7 +339,7 @@ function initialLoad() {
         var useridupdate = $("#id").val();
         // db.transaction(function (ts){ ts.executeSql(deletes,[],loadAndReset(),onError())})
         db.transaction(function (tx) {
-            tx.executeSql(updateStatement, [usernameupdate, useremailupdate, addressupdate, phoneupdate, imageupdate, gender, hobbies, useridupdate], loadAndReset, onError);
+            tx.executeSql(updateStatement, [usernameupdate, useremailupdate, addressupdate, phoneupdate, gender, hobbies, imageupdate, useridupdate], loadAndReset, onError);
         });
 
 
