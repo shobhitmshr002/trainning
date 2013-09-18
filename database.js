@@ -160,6 +160,8 @@ function loadAndReset() //Function for Load and Reset...
 
 {
     $('#preview').attr('src','NULL');
+    $('#preview').hide();
+
     resetForm();
 
     showRecords();
@@ -250,7 +252,7 @@ function initialLoad() {
     $('#image').change(function (event) {
 
         handleFileSelect(event);
-
+        $('#preview').show();
         //$('#preview').attr('src',$('#image').attr('target'));
     });
 
