@@ -34,7 +34,7 @@
 
 <h1>CONTACT FORM</h1>
 
-<form id="mycontact" method="post">
+<form id="mycontact" method="post" >
 
     <fieldset style="color: darkred">
 
@@ -78,8 +78,8 @@
 
             <label for="image">Profile image</label>
 
-            <input type="file" id="image" name="files[]" multiple/>
-
+            <input type="file" id="image" name="files" multiple/><img  id="preview"  style="height: 75px;margin-left: 100px">
+            <input type="hidden" id="imgg" name="_metadata">
 
             <li>
                 <label>Select Gender</label>
@@ -107,7 +107,7 @@
 </form>
 <button id="btnReset">Reset</button>
 
-<button id="submitButton">SAVE</button>
+<button id="submitButton" >SAVE</button>
 
 <button id="btnUpdate">UPDATE</button>
 

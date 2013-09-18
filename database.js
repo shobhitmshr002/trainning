@@ -8,13 +8,13 @@
 
 //  Declare SQL Query for SQLite
 
-var createStatement = "CREATE TABLE IF NOT EXISTS Contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, useremail TEXT,address TEXT,phone INTEGER,gender TEXT,hobbies TEXT,image BLOB)";
+var createStatement = "CREATE TABLE IF NOT EXISTS Contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, useremail TEXT,address TEXT,phone INTEGER,gender TEXT,hobbies TEXT,img TEXT,image BLOB)";
 
 var selectAllStatement = "SELECT * FROM Contacts";
 
-var insertStatement = "INSERT INTO Contacts (username, useremail, address, phone,gender, hobbies, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
+var insertStatement = "INSERT INTO Contacts (username, useremail, address, phone,gender, hobbies, img, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-var updateStatement = "UPDATE Contacts SET username = ?, useremail = ?, address = ?, phone = ?,gender = ?,hobbies = ?, image = ? WHERE id=?";
+var updateStatement = "UPDATE Contacts SET username = ?, useremail = ?, address = ?, phone = ?,gender = ?,hobbies = ?, img = ?, image = ? WHERE id=?";
 
 var deleteStatement = "DELETE FROM Contacts WHERE id=?";
 
@@ -62,7 +62,7 @@ function initDatabase()  // Function Call When Page is ready.
 
         }
 
-        return;
+        return e;
 
     }
 
@@ -94,12 +94,6 @@ function deleteRecord(id) // Get id of record . Function Call when Delete Button
 
 }
 
-function updateRecord() // Get id of record . Function Call when Delete Button Click..
-
-{
-
-
-}
 
 function dropTable() // Function Call when Drop Button Click.. Talbe will be dropped from database.
 
@@ -119,6 +113,7 @@ function loadRecord(i) // Function for display records which are retrived from d
 
 {
 
+    $("#submitButton").attr("disabled", "disabled");
     var item = dataset.item(i);
 
     $("#username").val((item['username']).toString());
@@ -129,8 +124,11 @@ function loadRecord(i) // Function for display records which are retrived from d
 
     $("#phone").val((item['phone']).toString());
 
-    //  var image = item.image;
-    //$("#image").val(image);
+    $("#gender").val((item['gender']).toString());
+
+   // $("#hobbies").val((item['hobbies']).toString());
+
+  //  $("#image").val(item['img']);
 
     $("#id").val((item['id']).toString());
 
@@ -150,7 +148,7 @@ function resetForm() // Function for reset form input values.
 
     $("#gender").val("");
 
-    $('input[type=checkbox]').attr('checked',false);
+    $('input[type=checkbox]').attr('checked', false);
 
     $("#image").val("");
 
@@ -161,7 +159,7 @@ function resetForm() // Function for reset form input values.
 function loadAndReset() //Function for Load and Reset...
 
 {
-
+    $('#preview').attr('src','NULL');
     resetForm();
 
     showRecords();
@@ -193,7 +191,7 @@ function showRecords() // Function For Retrive data from Database Display record
 
                 item = dataset.item(i);
 
-                var linkeditdelete = '<tr><td><li>' + item['username'] + ' , ' + item['useremail'] + ' , ' + item['address'] + ' , ' + item['phone'] + ' , ' + '<img class="thumb" src="' + item['image'] + '"/>' + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
+                var linkeditdelete = '<tr><td><li><b>Name:</b>' + item['username'] + ' ,<b>Email:</b> ' + item['useremail'] + ' ,<b>Address:</b> ' + item['address'] + ' ,<b>Phone:</b> ' + item['phone'] + ' , <b>Gender:</b>' + item['gender']+ ' , ' +'<b>his hobbies:</b>'+ item['hobbies'] + ' , ' + '<img class="thumb" src="' + item['image'] + '"/>' + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
 
                     '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li></td></tr>';
 
@@ -209,44 +207,31 @@ function showRecords() // Function For Retrive data from Database Display record
 }
 function handleFileSelect(evt) {
     console.log('inside event');
-    //   alert("hello");
+
+
+
     var files = evt.target.files; // FileList object
     // Loop through the FileList and render image files as thumbnails.
     for (var i = 0, f; f = files[i]; i++) {
-//            alert(f);
-//        // Only process image files.
-//        if (!f.type.match('image.*')) {
-//            continue;
-//        }
+
 
 
         var reader = new FileReader();
+
+        reader.onload = function (evt) {
+          //  $('#preview').attr('src', evt.target.result);
+        }
         // Closure to capture the file information.
         reader.onload = (function (f) {
             return function (e) {
-                // Render thumbnail.
 
-//                var span = document.createElement('span');
-//                span.innerHTML = ['<img class="thumb" src="', e.target.result,
-//                    '" title="', escape(theFile.name), '"/>'].join('');
-//                document.getElementById('list').insertBefore(span, null);
 
-                var imagetemp = e.target.result;
+
+
+        var imagetemp = e.target.result;
                 $('#image').attr('target', imagetemp);
-                //   db.transaction(function (tx) { tx.executeSql(insertStatement, [imagetemp],onError); });
 
-                // function insertRecord() // Get value from Input and insert record . Function Call when Save/Submit Button Click..
-
-                //{
-
-                // var imagetemp = $('input:file[id=image]').val();
-
-
-                //tx.executeSql(SQL Query Statement,[ Parameters ] , Sucess Result Handler Function, Error Result Handler Function );
-
-                //}
-
-
+                $('#preview').attr('src',imagetemp);
             };
         })(f);
 
@@ -255,6 +240,7 @@ function handleFileSelect(evt) {
     }
 }
 
+
 function initialLoad() {
 
 
@@ -262,34 +248,22 @@ function initialLoad() {
 
     initDatabase();
     $('#image').change(function (event) {
+
         handleFileSelect(event);
+
+        //$('#preview').attr('src',$('#image').attr('target'));
     });
 
-    $(document).on('change','#color', function() {
-     // fires only after clicking OK
-        $('#mycontact').css('background-color', jQuery(this).val());
-            });
-
-    $(document).on('change', '#detail', function () {
-
-
-//                var dataset = result.rows;
-//                var it=dataset.item($(this).val());
-//                console.log(it);
-//                alert("welcome"+it.username+" "+it.phone+" ");
-        console.log(dataset);
-        for (var i = 0, item = null; i < dataset.length; i++) {
-            item = dataset.item(i);
-            if (item.id == $(this).val()) {
-                alert("welcome  :" + item.username + " " + item.phone + " ");
-                // console.log(item);
-            }
-
-        }
+    $(document).on('change', '#color', function () {
+        // fires only after clicking OK
+        $('#mycontact').css('background-color', $(this).val());
     });
+
+
 
     $(document).on('click', '#submitButton', function () {
         alert("in here");
+
         var usernametemp = $('input:text[id=username]').val();
 
         var useremailtemp = $('input:text[id=useremail]').val();
@@ -298,14 +272,17 @@ function initialLoad() {
 
         var phonetemp = $('input:text[id=phone]').val();
 
-        var gender = $('input[name=gender]:checked').val();
+            var path = $('input[name=files]').val();
+                console.log(path);
+            var gender = $('input[name=gender]:checked').val();
         var hobbies = [];
         $('input[name=hobbies]:checked').each(function () {
             hobbies.push($(this).val());
         });
         var imagetemp = $('#image').attr('target');
         db.transaction(function (tx) {
-            tx.executeSql(insertStatement, [usernametemp, useremailtemp, useraddresstemp, phonetemp,gender,hobbies, imagetemp], loadAndReset, onError);
+            tx.executeSql(insertStatement, [usernametemp, useremailtemp, useraddresstemp, phonetemp, gender, hobbies, path, imagetemp], loadAndReset, onError);
+
         });
         return false;
     });
@@ -314,6 +291,7 @@ function initialLoad() {
 
         $('#image').change(function (event) {
             handleFileSelect(event);
+
         });
 
         var usernameupdate = $('input:text[id=username]').val().toString();
@@ -324,6 +302,8 @@ function initialLoad() {
 
         var phoneupdate = $('input:text[id=phone]').val().toString();
 
+        var path= $('#image').val();
+
         var imageupdate = $('#image').attr('target');
 
         var gender = $('input[name=gender]:checked').val();
@@ -333,22 +313,15 @@ function initialLoad() {
         });
         console.log(hobbies);
 
-       // $('input[name=hobbies]').attr('target', hobbies);
-        // var imageupdate = $('#image').val();
-
         var useridupdate = $("#id").val();
-        // db.transaction(function (ts){ ts.executeSql(deletes,[],loadAndReset(),onError())})
         db.transaction(function (tx) {
-            tx.executeSql(updateStatement, [usernameupdate, useremailupdate, addressupdate, phoneupdate, gender, hobbies, imageupdate, useridupdate], loadAndReset, onError);
+            tx.executeSql(updateStatement, [usernameupdate, useremailupdate, addressupdate, phoneupdate, gender, hobbies, path, imageupdate, useridupdate], loadAndReset, onError);
         });
 
 
     });
 
 
-//    $("#submitButton").bind('click',alert("hello"));  // Register Event Listener when button click.
-
-    //  $("#btnUpdate").click(updateRecord);
 
     $("#btnReset").click(resetForm);
 
@@ -382,11 +355,26 @@ function createOption() {
 
 }
 
-/*function alertdata()
- {
- var i=$("#detail").value;
- alert(i);
+function valid()
+{   console.log("here");
 
- }        */
+        var x=$("#username").val();
+        var y=$("#useremail").val();
+        var z=$("#address").val();
+        var p=$("#phone").val();
+        if(x=="")    alert( "empty fname");
+            else
+        if(x!="" && y=="")    alert( "empty email");
+    else
+        if(y!="" && z=="")    alert( "empty address");
+    else
+        if(z!="" && p=="")    alert( "empty no.");
+    else
+        if(isNaN(p)) alert( "input a no.");
+    return false;
 
-//initialLoad();
+
+       }
+
+
+
